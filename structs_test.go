@@ -233,3 +233,28 @@ func TestMarshallTransStructPtr(t *testing.T) {
 		}
 	}
 }
+
+func TestEmptyArr(t *testing.T) {
+	var src []Src
+	var dest []Dest
+	err := TransStructArr(&dest, src)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if dest != nil {
+		t.Error("nil array should result in nil arrar")
+		return
+	}
+
+	src = []Src{}
+	err = TransStructArr(&dest, src)
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	if dest == nil || len(dest) != 0 {
+		t.Error("Empty array should result in empty arrar")
+		return
+	}
+}

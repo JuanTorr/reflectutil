@@ -181,10 +181,10 @@ func setSliceString(destv, srcv reflect.Value) error {
 }
 func setSliceStruct(destv, srcv reflect.Value) error {
 	//log.Print("setSliceStruct ")
-	l := srcv.Len()
-	if l == 0 {
+	if srcv.IsNil() {
 		return nil
 	}
+	l := srcv.Len()
 	s := reflect.MakeSlice(reflect.SliceOf(destv.Type().Elem()), l, l)
 	for i := 0; i < l; i++ {
 		err := transformStruct(s.Index(i), srcv.Index(i))
