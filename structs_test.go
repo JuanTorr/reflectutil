@@ -24,6 +24,9 @@ func randString() string {
 
 type Src struct {
 	Str       string
+	Float     float64
+	Bool      int
+	Uint      uint8
 	Num       *int
 	SameName  rune
 	NilPtr    *int
@@ -43,6 +46,10 @@ type NestedSrc struct {
 type Dest struct {
 	NotStr    string `trans:"from:Str"`
 	NotNum    string `trans:"from:Num"`
+	Float     float32
+	Bool      bool
+	Uint      uint64
+	Num       int64
 	SameName  string
 	NilPtr    string
 	Nested    NestedDest
@@ -67,6 +74,9 @@ func getSrc() Src {
 		Time:      time.Now(),
 		StringArr: []string{randString(), randString(), randString()},
 		StructArr: []NestedSrc{NestedSrc{Same: randString()}, NestedSrc{Same: randString()}},
+		Float:     rand.Float64() * float64(rand.Int()),
+		Bool:      rand.Intn(2),
+		Uint:      uint8(rand.Uint32()),
 	}
 	if rand.Intn(2) == 1 {
 		a.Num = &i
@@ -152,7 +162,7 @@ func compareArrString(a, b []string) bool {
 	return true
 }
 func TestTransStructArr(t *testing.T) {
-	for i := 0; i < 100; i++ {
+	for i := 0; i < 1; i++ {
 		var d Dest
 		s := getSrc()
 		err := TransStruct(&d, s)
@@ -165,6 +175,8 @@ func TestTransStructArr(t *testing.T) {
 			t.Errorf("Incorrect transformation:%s\n\n%+v\n%+v", where, s, d)
 			return
 		}
+		fmt.Printf("%+v\n\n", s)
+		fmt.Printf("%+v\n\n", d)
 	}
 }
 func TestTransStruct(t *testing.T) {

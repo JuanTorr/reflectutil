@@ -98,6 +98,14 @@ func setValue(destv, srcv reflect.Value) error {
 		return nil
 	}
 	switch destv.Kind() {
+	case reflect.Bool:
+		return setBool(destv, srcv)
+	case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+		return setUint(destv, srcv)
+	case reflect.Int, reflect.Int16, reflect.Int32, reflect.Int64:
+		return setInt(destv, srcv)
+	case reflect.Float32, reflect.Float64:
+		return setFloat(destv, srcv)
 	case reflect.String:
 		return setString(destv, srcv)
 	case reflect.Struct:
@@ -108,6 +116,62 @@ func setValue(destv, srcv reflect.Value) error {
 		return setSliceValue(destv, srcv)
 	}
 	return fmt.Errorf("%s type not implemented", destv.Kind())
+}
+
+func setBool(destv, srcv reflect.Value) error {
+	switch srcv.Kind() {
+	case reflect.Ptr:
+		return setValue(destv, srcv.Elem())
+	default:
+		v, err := iToBool(srcv.Interface())
+		if err != nil {
+			return err
+		}
+		destv.SetBool(v)
+	}
+	return nil
+}
+
+func setUint(destv, srcv reflect.Value) error {
+	switch srcv.Kind() {
+	case reflect.Ptr:
+		return setValue(destv, srcv.Elem())
+	default:
+		v, err := iToUint64(srcv.Interface())
+		if err != nil {
+			return err
+		}
+		destv.SetUint(v)
+	}
+	return nil
+}
+
+func setInt(destv, srcv reflect.Value) error {
+	switch srcv.Kind() {
+	case reflect.Ptr:
+		return setValue(destv, srcv.Elem())
+	default:
+		v, err := iToInt64(srcv.Interface())
+		if err != nil {
+			return err
+		}
+		destv.SetInt(v)
+	}
+	return nil
+}
+
+func setFloat(destv, srcv reflect.Value) error {
+	switch srcv.Kind() {
+	case reflect.Ptr:
+		return setValue(destv, srcv.Elem())
+	default:
+		v, err := iToFloat64(srcv.Interface())
+		if err != nil {
+			return err
+		}
+		destv.SetFloat(v)
+	}
+	return nil
 }
 
 func setString(destv, srcv reflect.Value) error {
