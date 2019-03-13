@@ -1,4 +1,4 @@
-package structs
+package reflectutil
 
 import (
 	"fmt"
@@ -228,7 +228,7 @@ func TestMarshalTransStructArrPtr(t *testing.T) {
 func TestMarshallTransStruct(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		s := getSrc()
-		_, err := MarshallTransStruct(Dest{}, s)
+		_, err := MarshalTransStruct(Dest{}, s)
 		if err != nil {
 			t.Error(err)
 			return
@@ -238,7 +238,7 @@ func TestMarshallTransStruct(t *testing.T) {
 func TestMarshallTransStructPtr(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		s := getSrc()
-		_, err := MarshallTransStruct(Dest{}, s)
+		_, err := MarshalTransStruct(Dest{}, s)
 		if err != nil {
 			t.Error(err)
 			return

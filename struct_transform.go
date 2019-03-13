@@ -1,4 +1,4 @@
-package structs
+package reflectutil
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ import (
 //ErrInvalidTag defines the error when the tags are invalids
 var ErrInvalidTag = errors.New("Invalid tag")
 
-//TransStructArr Trnasformforms the struct array from struct array  type to dest struct array
+//TransStructArr Transforms the source struct array into the destination struct
 func TransStructArr(dest, src interface{}) error {
 	destv := reflect.ValueOf(dest)
 	if destv.Kind() != reflect.Ptr {
@@ -27,7 +27,7 @@ func TransStructArr(dest, src interface{}) error {
 	return setSliceValue(destv, reflect.ValueOf(src))
 }
 
-//TransStruct Transforms the src struc to the dest struct
+//TransStruct Transforms the source struct into the destination struct
 func TransStruct(dest, src interface{}) error {
 	destv := reflect.ValueOf(dest)
 	if destv.Kind() != reflect.Ptr {
@@ -41,7 +41,7 @@ func TransStruct(dest, src interface{}) error {
 	return transformStruct(destv, reflect.ValueOf(src))
 }
 
-//MarshalTransStructArr Marsharlls and transforms the struct array from struct array  type to dest struct array
+//MarshalTransStructArr Marsharls and transforms the source struct array into the destination struct
 func MarshalTransStructArr(dest, src interface{}) ([]byte, error) {
 	destv := reflect.ValueOf(dest)
 	if destv.Kind() == reflect.Ptr {
@@ -58,8 +58,8 @@ func MarshalTransStructArr(dest, src interface{}) ([]byte, error) {
 	return json.Marshal(destv.Interface())
 }
 
-//MarshallTransStruct realiza el marshall de la estructura transformada
-func MarshallTransStruct(dest, src interface{}) ([]byte, error) {
+//MarshalTransStruct Marshals and transforms the source struct into the destination struct
+func MarshalTransStruct(dest, src interface{}) ([]byte, error) {
 	destv := reflect.ValueOf(dest)
 	switch reflect.TypeOf(dest).Kind() {
 	case reflect.Ptr:
@@ -123,7 +123,7 @@ func setBool(destv, srcv reflect.Value) error {
 	case reflect.Ptr:
 		return setValue(destv, srcv.Elem())
 	default:
-		v, err := iToBool(srcv.Interface())
+		v, err := IToBool(srcv.Interface())
 		if err != nil {
 			return err
 		}
@@ -137,7 +137,7 @@ func setUint(destv, srcv reflect.Value) error {
 	case reflect.Ptr:
 		return setValue(destv, srcv.Elem())
 	default:
-		v, err := iToUint64(srcv.Interface())
+		v, err := IToUint64(srcv.Interface())
 		if err != nil {
 			return err
 		}
@@ -151,7 +151,7 @@ func setInt(destv, srcv reflect.Value) error {
 	case reflect.Ptr:
 		return setValue(destv, srcv.Elem())
 	default:
-		v, err := iToInt64(srcv.Interface())
+		v, err := IToInt64(srcv.Interface())
 		if err != nil {
 			return err
 		}
@@ -165,7 +165,7 @@ func setFloat(destv, srcv reflect.Value) error {
 	case reflect.Ptr:
 		return setValue(destv, srcv.Elem())
 	default:
-		v, err := iToFloat64(srcv.Interface())
+		v, err := IToFloat64(srcv.Interface())
 		if err != nil {
 			return err
 		}

@@ -1,4 +1,4 @@
-package structs
+package reflectutil
 
 import (
 	"fmt"
@@ -6,19 +6,21 @@ import (
 	"strings"
 )
 
-func iToBool(i interface{}) (res bool, err error) {
+//IToBool convert the interface value to bool
+func IToBool(i interface{}) (res bool, err error) {
 	switch v := i.(type) {
 	case bool:
 		return v, nil
 	case string:
 		return strings.ToLower(v) == "true", nil
 	default:
-		f, err := iToFloat64(v)
+		f, err := IToFloat64(v)
 		return f != 0, err
 	}
 }
 
-func iToUint64(i interface{}) (res uint64, err error) {
+//IToUint64 convert the interface value to uint64
+func IToUint64(i interface{}) (res uint64, err error) {
 	switch v := i.(type) {
 	case uint64:
 		return v, nil
@@ -35,7 +37,8 @@ func iToUint64(i interface{}) (res uint64, err error) {
 	}
 }
 
-func iToInt64(i interface{}) (res int64, err error) {
+//IToInt64 convert the interface value to int64
+func IToInt64(i interface{}) (res int64, err error) {
 	switch v := i.(type) {
 	case int64:
 		return v, nil
@@ -52,7 +55,8 @@ func iToInt64(i interface{}) (res int64, err error) {
 	}
 }
 
-func iToFloat64(i interface{}) (res float64, err error) {
+//IToFloat64 convert the interface value to float64
+func IToFloat64(i interface{}) (res float64, err error) {
 	switch v := i.(type) {
 	case float64:
 		return v, nil
